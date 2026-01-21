@@ -1,7 +1,16 @@
+% Metrics Script
+% Locates project root dynamically to find input/output folders
+currentFile = mfilename('fullpath');
+[matlabDir, ~, ~] = fileparts(currentFile);
+projectRoot = fileparts(matlabDir);
+
+inputDir = fullfile(projectRoot, 'input');
+outputDir = fullfile(projectRoot, 'output');
+
 % Step 7: Visualization and Quality Metrics
 % Visualize Original vs Final Image
-originalImg = imread('input/nyk.jpg');
-finalImage = imread('output/final_reconstructed_image.png');
+originalImg = imread(fullfile(inputDir, 'nyk.jpg'));
+finalImage = imread(fullfile(outputDir, 'final_reconstructed_image.png'));
 
 figure('Name', 'Original vs Final Image');
 subplot(1,2,1), imshow(originalImg), title('Original Image');

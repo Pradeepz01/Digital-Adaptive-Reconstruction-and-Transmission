@@ -1,6 +1,16 @@
+% Decoder Script
+% Locates project root dynamically to find input/output folders
+currentFile = mfilename('fullpath');
+[matlabDir, ~, ~] = fileparts(currentFile);
+projectRoot = fileparts(matlabDir);
+
+dataDir = fullfile(projectRoot, 'data');
+outputDir = fullfile(projectRoot, 'output');
+
 % Step 5: Huffman Decoding
-load('data/huffman_encoded.mat');
-load('data/shuffle_keys.mat');
+load(fullfile(dataDir, 'huffman_encoded.mat'));
+load(fullfile(dataDir, 'shuffle_keys.mat'));
+
 decodedData = struct();
 decodedImgs = zeros(rows, cols, 3);
 for i = 1:3
@@ -11,6 +21,7 @@ for i = 1:3
     decodedImgs(:,:,i) = reshape(decoded, rows, cols);
 end
 disp('Huffman decoding done.');
+
 figure('Name', 'Decoded Channels');
 subplot(1,3,1), imshow(decodedImgs(:,:,1)), title('Red Decoded');
 subplot(1,3,2), imshow(decodedImgs(:,:,2)), title('Green Decoded');
@@ -25,5 +36,5 @@ for i = 1:3
     finalImage(:,:,i) = reshape(reshaped, rows, cols);
 end
 reconstructedImg = uint8(finalImage * 255);
-imwrite(reconstructedImg, 'output/final_reconstructed_image.png');
+imwrite(reconstructedImg, fullfile(outputDir, 'final_reconstructed_image.png'));
 disp('Final image reconstructed and saved.');
